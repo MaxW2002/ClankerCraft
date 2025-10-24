@@ -48,6 +48,8 @@ public final class ChatInteraction {
     private static final String PAINT_TRIGGER = "@makepainting"; // case-insensitive
     private static final String MUSIC_TRIGGER = "@makemusic"; // new: music generation via Lyria2
     private static final String PERSONALITY_TRIGGER = "@personality"; // switch personality in-game
+    private static final String FOLLOW_TRIGGER = "@follow"; // make clanker follow player
+    private static final String STAY_TRIGGER = "@stay"; // make clanker stop following
     private static final double SEARCH_RANGE = 256.0; // increased search range in blocks
     private static final double MOVE_SPEED = 1; // navigation speed
     private static final double ARRIVE_DISTANCE = 2.5; // when considered arrived to freeze
@@ -188,6 +190,58 @@ public final class ChatInteraction {
                         player.sendMessage(Text.literal(LanguageManager.get("clanker.personality.effect_next")));
                     }
                     
+                    return;
+                }
+
+                // 4) FOLLOW COMMAND
+                if (lower.startsWith(FOLLOW_TRIGGER)) {
+                    Session session = SESSIONS.get(player.getUuid());
+                    if (session == null) {
+                        player.sendMessage(Text.literal("You must start a conversation with @clanker first!"));
+                        return;
+                    }
+                    
+                    ClankerEntity mob = findMobByUuid(world, session.mobUuid);
+                    if (mob == null || !mob.isAlive()) {
+                        SESSIONS.remove(player.getUuid());
+                        player.sendMessage(Text.literal(LanguageManager.get("clanker.gone")));
+                        return;
+                    }
+                    
+                    // Enable following mode
+                    session.following = true;
+                    session.awaitingFreeze = false; // Don't freeze while following
+                    mob.setAiDisabled(false); // Unfreeze the mob
+                    
+                    String followMsg = "I'll follow you now!";
+                    player.sendMessage(Text.literal(followMsg));
+                    ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(followMsg, mob.getId()));
+                    return;
+                }
+
+                // 5) STAY COMMAND
+                if (lower.startsWith(STAY_TRIGGER)) {
+                    Session session = SESSIONS.get(player.getUuid());
+                    if (session == null) {
+                        player.sendMessage(Text.literal("You must start a conversation with @clanker first!"));
+                        return;
+                    }
+                    
+                    ClankerEntity mob = findMobByUuid(world, session.mobUuid);
+                    if (mob == null || !mob.isAlive()) {
+                        SESSIONS.remove(player.getUuid());
+                        player.sendMessage(Text.literal(LanguageManager.get("clanker.gone")));
+                        return;
+                    }
+                    
+                    // Disable following mode and freeze in place
+                    session.following = false;
+                    mob.setAiDisabled(true); // Freeze the mob
+                    mob.getNavigation().stop(); // Stop any current navigation
+                    
+                    String stayMsg = "I'll stay here.";
+                    player.sendMessage(Text.literal(stayMsg));
+                    ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(stayMsg, mob.getId()));
                     return;
                 }
 
@@ -406,7 +460,16 @@ public final class ChatInteraction {
                 if (mob == null || !mob.isAlive()) continue;
 
                 double distSq = mob.squaredDistanceTo(player);
-                if (s.awaitingFreeze) {
+                
+                // If in following mode, continuously path to player
+                if (s.following) {
+                    if ((tickCounter - s.lastPathTick) >= PATH_REFRESH_TICKS) {
+                        s.lastPathTick = tickCounter;
+                        mob.getNavigation().startMovingTo(player, MOVE_SPEED);
+                    }
+                    // Always look at player while following
+                    mob.lookAt(net.minecraft.command.argument.EntityAnchorArgumentType.EntityAnchor.EYES, player.getEyePos());
+                } else if (s.awaitingFreeze) {
                     // Re-issue path every PATH_REFRESH_TICKS until arrived
                     if ((tickCounter - s.lastPathTick) >= PATH_REFRESH_TICKS) {
                         s.lastPathTick = tickCounter;
@@ -462,6 +525,8 @@ public final class ChatInteraction {
         // freeze-on-arrival state
         volatile boolean awaitingFreeze = false;
         int lastPathTick = 0;
+        // follow mode state
+        volatile boolean following = false;
 
         Session(UUID mobUuid) { this.mobUuid = mobUuid; }
 
