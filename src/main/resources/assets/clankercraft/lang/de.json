@@ -26,5 +26,11 @@
   "clanker.tts.quota_exceeded": "TTS-Kontingent überschritten. Nur Chat-Wiedergabe.",
   "clanker.tts.quota_exceeded_full": "TTS-Kontingent überschritten. Audio wird heute übersprungen.",
   "clanker.tts.unavailable": "TTS für diese Antwort nicht verfügbar.",
-  "clanker.tts.error": "TTS-Fehler: {0}"
+  "clanker.tts.error": "TTS-Fehler: {0}",
+  
+  "clanker.personality.current": "Aktuelle Persönlichkeit: {0}",
+  "clanker.personality.available": "Verfügbare Persönlichkeiten: {0}",
+  "clanker.personality.switched": "Zu {0}-Persönlichkeit gewechselt!",
+  "clanker.personality.unknown": "Unbekannte Persönlichkeit '{0}'. Verfügbar: {1}",
+  "clanker.personality.effect_next": "Die neue Persönlichkeit wird in meiner nächsten Antwort wirksam."
 }

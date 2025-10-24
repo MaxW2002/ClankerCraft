@@ -47,6 +47,7 @@ public final class ChatInteraction {
     private static final String BYE_TRIGGER = "@bye"; // end conversation
     private static final String PAINT_TRIGGER = "@makepainting"; // case-insensitive
     private static final String MUSIC_TRIGGER = "@makemusic"; // new: music generation via Lyria2
+    private static final String PERSONALITY_TRIGGER = "@personality"; // switch personality in-game
     private static final double SEARCH_RANGE = 256.0; // increased search range in blocks
     private static final double MOVE_SPEED = 1; // navigation speed
     private static final double ARRIVE_DISTANCE = 2.5; // when considered arrived to freeze
@@ -137,6 +138,56 @@ public final class ChatInteraction {
                         int startEntityId = mob.getId();
                         ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(byeMsg, startEntityId));
                     }
+                    return;
+                }
+
+                // 3) PERSONALITY SWITCH
+                if (lower.startsWith(PERSONALITY_TRIGGER)) {
+                    String requestedPersonality = trimmed.substring(PERSONALITY_TRIGGER.length()).trim();
+                    
+                    if (requestedPersonality.isEmpty()) {
+                        // No personality specified, show current and available
+                        String current = PersonalityManager.getCurrentPersonalityName();
+                        java.util.List<String> available = PersonalityManager.getAvailablePersonalities();
+                        String availableList = String.join(", ", available);
+                        player.sendMessage(Text.literal(LanguageManager.format("clanker.personality.current", current)));
+                        player.sendMessage(Text.literal(LanguageManager.format("clanker.personality.available", availableList)));
+                        return;
+                    }
+                    
+                    // Check if requested personality exists
+                    java.util.List<String> available = PersonalityManager.getAvailablePersonalities();
+                    String matchedPersonality = null;
+                    for (String p : available) {
+                        if (p.equalsIgnoreCase(requestedPersonality)) {
+                            matchedPersonality = p;
+                            break;
+                        }
+                    }
+                    
+                    if (matchedPersonality == null) {
+                        String availableList = String.join(", ", available);
+                        player.sendMessage(Text.literal(LanguageManager.format("clanker.personality.unknown", requestedPersonality, availableList)));
+                        return;
+                    }
+                    
+                    // Set the new personality
+                    PersonalityManager.setPersonality(matchedPersonality);
+                    String msg = LanguageManager.format("clanker.personality.switched", matchedPersonality);
+                    player.sendMessage(Text.literal(msg));
+                    
+                    // If in conversation, update the session with new personality
+                    Session session = SESSIONS.get(player.getUuid());
+                    if (session != null) {
+                        // Clear history and reinject new personality
+                        session.history.clear();
+                        String persona = PersonalityManager.getActivePersonality();
+                        if (persona != null && !persona.isBlank()) {
+                            session.appendSystem(persona);
+                        }
+                        player.sendMessage(Text.literal(LanguageManager.get("clanker.personality.effect_next")));
+                    }
+                    
                     return;
                 }
 

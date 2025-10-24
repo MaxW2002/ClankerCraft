@@ -26,5 +26,11 @@
   "clanker.tts.quota_exceeded": "Cuota de TTS excedida. Solo reproduciendo chat.",
   "clanker.tts.quota_exceeded_full": "Cuota de TTS excedida. El audio se omitirá hoy.",
   "clanker.tts.unavailable": "TTS no disponible para esta respuesta.",
-  "clanker.tts.error": "Error de TTS: {0}"
+  "clanker.tts.error": "Error de TTS: {0}",
+  
+  "clanker.personality.current": "Personalidad actual: {0}",
+  "clanker.personality.available": "Personalidades disponibles: {0}",
+  "clanker.personality.switched": "¡Cambiado a personalidad {0}!",
+  "clanker.personality.unknown": "Personalidad desconocida '{0}'. Disponibles: {1}",
+  "clanker.personality.effect_next": "La nueva personalidad tendrá efecto en mi próxima respuesta."
 }

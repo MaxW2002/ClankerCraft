@@ -20,6 +20,7 @@ public final class PersonalityManager {
     private static volatile String cachedName;
     private static volatile String cachedText;
     private static volatile String cachedCapabilities;
+    private static volatile String runtimePersonalityOverride; // In-game personality override
 
     public static String getActivePersonality() {
         try {
@@ -50,6 +51,11 @@ public final class PersonalityManager {
 
     // Load personality name from the properties file
     private static String loadPersonalityName() {
+        // Check runtime override first (set by @personality command)
+        if (runtimePersonalityOverride != null && !runtimePersonalityOverride.isBlank()) {
+            return runtimePersonalityOverride;
+        }
+        
         // Read from: clankercraft-llm.properties --> CLANKER_PERSONALITY
         Path cfgFile = FabricLoader.getInstance().getConfigDir().resolve("clankercraft-llm.properties");
         if (Files.exists(cfgFile)) {
@@ -115,6 +121,67 @@ public final class PersonalityManager {
             cachedCapabilities = "";
         }
         return cachedCapabilities;
+    }
+
+    /**
+     * Set personality at runtime (in-game). This overrides config file settings.
+     * @param personalityName The name of the personality (case-insensitive, without .txt extension)
+     */
+    public static void setPersonality(String personalityName) {
+        if (personalityName == null || personalityName.isBlank()) {
+            runtimePersonalityOverride = null;
+        } else {
+            runtimePersonalityOverride = personalityName.trim();
+        }
+        // Clear cache to force reload with new personality
+        cachedName = null;
+        cachedText = null;
+    }
+
+    /**
+     * Get list of available personality names from bundled resources and custom folder.
+     * @return List of personality names (without .txt extension)
+     */
+    public static java.util.List<String> getAvailablePersonalities() {
+        java.util.Set<String> personalities = new java.util.LinkedHashSet<>();
+        
+        // 1) Add bundled personalities from resources
+        // We know these exist: Excited, Grumpy, Robotic
+        String[] bundled = {"Excited", "Grumpy", "Robotic"};
+        for (String name : bundled) {
+            String cp = "/assets/clankercraft/personalities/" + name + ".txt";
+            try (InputStream in = PersonalityManager.class.getResourceAsStream(cp)) {
+                if (in != null) {
+                    personalities.add(name);
+                }
+            } catch (IOException ignored) { }
+        }
+        
+        // 2) Add custom personalities from config folder
+        Path folder = FabricLoader.getInstance().getConfigDir().resolve("clankercraft").resolve("personalities");
+        if (Files.exists(folder) && Files.isDirectory(folder)) {
+            try {
+                Files.list(folder)
+                    .filter(p -> p.toString().endsWith(".txt"))
+                    .forEach(p -> {
+                        String fileName = p.getFileName().toString();
+                        String name = fileName.substring(0, fileName.length() - 4);
+                        personalities.add(name);
+                    });
+            } catch (IOException ignored) { }
+        }
+        
+        return new java.util.ArrayList<>(personalities);
+    }
+
+    /**
+     * Get the current active personality name (either override or config default).
+     * @return The name of the currently active personality
+     */
+    public static String getCurrentPersonalityName() {
+        String name = loadPersonalityName();
+        if (name == null || name.isBlank()) name = DEFAULT_PERSONALITY_NAME;
+        return name;
     }
 }
 
