@@ -19,6 +19,7 @@ public final class PersonalityManager {
     private static final String DEFAULT_PERSONALITY_NAME = "clanker";
     private static volatile String cachedName;
     private static volatile String cachedText;
+    private static volatile String cachedCapabilities;
 
     public static String getActivePersonality() {
         try {
@@ -32,6 +33,12 @@ public final class PersonalityManager {
             // Append language instruction to ensure LLM responds in the correct language
             String languageInstruction = LanguageManager.getLanguageInstruction();
             text = text + " " + languageInstruction;
+            
+            // Append capabilities so the Clanker knows what it can do
+            String capabilities = loadCapabilities();
+            if (capabilities != null && !capabilities.isBlank()) {
+                text = text + "\n\n" + capabilities;
+            }
             
             cachedName = name;
             cachedText = text;
@@ -84,6 +91,30 @@ public final class PersonalityManager {
         // Default to Excited
         return "System instruction: You are Clanker, an excitable, upbeat companion. " +
                 "Respond with enthusiasm, positivity, and helpful energy. Keep responses concise but lively.";
+    }
+
+    // Load capabilities documentation from bundled resource
+    private static String loadCapabilities() {
+        // Return cached if already loaded
+        if (cachedCapabilities != null) return cachedCapabilities;
+        
+        // Try to load from bundled resource: assets/clankercraft/capabilities.txt
+        String cp = "/assets/clankercraft/capabilities.txt";
+        try (InputStream in = PersonalityManager.class.getResourceAsStream(cp)) {
+            if (in != null) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) sb.append(line).append('\n');
+                    cachedCapabilities = sb.toString();
+                    return cachedCapabilities;
+                }
+            }
+        } catch (IOException e) {
+            // If capabilities file is missing, return empty string (non-critical)
+            cachedCapabilities = "";
+        }
+        return cachedCapabilities;
     }
 }
 
