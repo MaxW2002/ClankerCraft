@@ -1,6 +1,8 @@
 package clanker.craft.personality;
 
 import net.fabricmc.loader.api.FabricLoader;
+import clanker.craft.config.Config;
+import clanker.craft.i18n.LanguageManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +28,11 @@ public final class PersonalityManager {
 
             String text = loadPersonalityText(name);
             if (text == null || text.isBlank()) text = builtInFallback(name);
+            
+            // Append language instruction to ensure LLM responds in the correct language
+            String languageInstruction = LanguageManager.getLanguageInstruction();
+            text = text + " " + languageInstruction;
+            
             cachedName = name;
             cachedText = text;
             return text;
@@ -42,7 +49,8 @@ public final class PersonalityManager {
             Properties props = new Properties();
             try (InputStream in = Files.newInputStream(cfgFile)) {
                 props.load(in);
-                String v = props.getProperty("CLANKER_PERSONALITY");
+                String v = Config.personalityName();
+                if (v == null) v = props.getProperty("CLANKER_PERSONALITY");
                 if (v != null) return v.trim();
             } catch (IOException ignored) { }
         }

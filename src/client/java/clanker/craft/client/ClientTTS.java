@@ -3,6 +3,8 @@ package clanker.craft.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
+import clanker.craft.config.Config;
+import clanker.craft.i18n.LanguageManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.Text;
@@ -68,14 +70,14 @@ public final class ClientTTS {
     // New entry point with positional playback via entityId (if available)
     public void speakAsync(MinecraftClient client, String text, int entityId) {
         if (quotaExceeded) {
-            notifyClient(client, "TTS quota exceeded. Playing chat only.");
+            notifyClient(client, LanguageManager.get("clanker.tts.quota_exceeded"));
             return;
         }
         exec.submit(() -> {
             try {
                 PcmAudio pcm = synthesizePcm(text);
                 if (pcm == null || pcm.data.length == 0) {
-                    notifyClient(client, "TTS unavailable for this response.");
+                    notifyClient(client, LanguageManager.get("clanker.tts.unavailable"));
                     return;
                 }
                 // Schedule OpenAL playback on client thread
@@ -89,9 +91,9 @@ public final class ClientTTS {
                 });
             } catch (QuotaException qe) {
                 quotaExceeded = true;
-                notifyClient(client, "TTS quota exceeded. Further audio will be skipped today.");
+                notifyClient(client, LanguageManager.get("clanker.tts.quota_exceeded_full"));
             } catch (Exception e) {
-                notifyClient(client, "TTS error: " + e.getMessage());
+                notifyClient(client, LanguageManager.format("clanker.tts.error", e.getMessage()));
             }
         });
     }
@@ -139,25 +141,54 @@ public final class ClientTTS {
         if (p != null) p.sendMessage(Text.literal(msg), false);
     }
 
-    // Prefer dedicated TTS key; no fallback to AI Studio key
+    // Prefer dedicated TTS key; accept aliases via Config
     private static String resolveTtsKey() {
-        return resolve("GOOGLE_CLOUD_API_KEY");
+        return Config.ttsApiKey();
+    }
+
+    /**
+     * Sanitize text for TTS by removing or replacing symbols that shouldn't be pronounced.
+     * This includes markdown formatting symbols, special characters, and other non-verbal elements.
+     */
+    private static String sanitizeTextForTts(String text) {
+        if (text == null || text.isEmpty()) return text;
+        
+        // Remove markdown-style emphasis markers (*, _, ~, `)
+        String sanitized = text.replaceAll("[*_~`]", "");
+        
+        // Remove other common symbols that shouldn't be spoken
+        sanitized = sanitized.replaceAll("[#@$%^&+=<>\\[\\]{}|\\\\]", "");
+        
+        // Replace multiple spaces with single space
+        sanitized = sanitized.replaceAll("\\s+", " ");
+        
+        // Trim leading/trailing whitespace
+        sanitized = sanitized.trim();
+        
+        return sanitized;
     }
 
     private PcmAudio synthesizePcm(String text) throws Exception {
         String apiKey = resolveTtsKey();
-        if (apiKey == null || apiKey.isBlank()) throw new IllegalStateException("No GOOGLE_TTS_API_KEY configured for TTS");
+        if (apiKey == null || apiKey.isBlank()) throw new IllegalStateException("No GOOGLE_TTS_API_KEY configured (you can also set GOOGLE_CLOUD_API_KEY). See clankercraft-llm.properties");
+
+        // Sanitize text to remove symbols that shouldn't be pronounced
+        String sanitizedText = sanitizeTextForTts(text);
 
         // Cloud Text-to-Speech v1 request for 24 kHz, mono, 16-bit PCM (LINEAR16)
         int rate = 24000;
         JsonObject body = new JsonObject();
         JsonObject input = new JsonObject();
-        input.addProperty("text", text);
+        input.addProperty("text", sanitizedText);
         body.add("input", input);
 
         JsonObject voice = new JsonObject();
         String lang = resolve("TTS_LANGUAGE_CODE");
-        if (lang == null || lang.isBlank()) lang = "en-US";
+        // If no explicit TTS language is set, derive it from CLANKER_LANGUAGE
+        if (lang == null || lang.isBlank()) {
+            String clankerLang = LanguageManager.getConfiguredLanguage();
+            lang = mapLanguageCodeToTTS(clankerLang);
+        }
         voice.addProperty("languageCode", lang);
         String voiceName = resolve("TTS_VOICE_NAME"); // e.g., "en-US-Chirp-HD-F"
         if (voiceName != null && !voiceName.isBlank()) voice.addProperty("name", voiceName);
@@ -210,6 +241,10 @@ public final class ClientTTS {
     private record PcmAudio(byte[] data, int sampleRate, int channels) {}
 
     private static String resolve(String key) {
+        // Prefer centralized config
+        String v0 = Config.get(key);
+        if (v0 != null) return v0;
+
         // JVM property
         String v = System.getProperty(key);
         if (v != null && !v.isBlank()) return v.trim();
@@ -228,6 +263,21 @@ public final class ClientTTS {
         } catch (Throwable ignored) {
             return null;
         }
+    }
+
+    /**
+     * Map a simple language code (e.g., "en", "es") to a TTS language code (e.g., "en-US", "es-ES").
+     */
+    private static String mapLanguageCodeToTTS(String langCode) {
+        return switch (langCode.toLowerCase()) {
+            case "en" -> "en-US";
+            case "es" -> "es-ES";
+            case "fr" -> "fr-FR";
+            case "de" -> "de-DE";
+            case "it" -> "it-IT";
+            case "pt" -> "pt-PT";
+            default -> "en-US";
+        };
     }
 
     private static double clamp(double v, double lo, double hi) {
