@@ -1,5 +1,6 @@
 package clanker.craft.client;
 
+import clanker.craft.client.render.ClankerEntityRenderer;
 import clanker.craft.network.TTSSpeakS2CPayload;
 import clanker.craft.registry.ModEntities;
 
@@ -8,7 +9,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.client.render.entity.CopperGolemEntityRenderer;
 
 
 public class ClankerCraftClient implements ClientModInitializer {
@@ -31,7 +31,7 @@ public class ClankerCraftClient implements ClientModInitializer {
         // Tick to cleanup OpenAL sources
         ClientTickEvents.END_CLIENT_TICK.register(client -> ClientTTS.get().tick(client));
 
-        // Register renderer for Clanker entity (reuse vanilla Illusioner renderer)
-        EntityRendererRegistry.register(ModEntities.CLANKER, CopperGolemEntityRenderer::new);
+        // Register custom renderer for Clanker entity
+        EntityRendererRegistry.register(ModEntities.CLANKER, ClankerEntityRenderer::new);
     }
 }
