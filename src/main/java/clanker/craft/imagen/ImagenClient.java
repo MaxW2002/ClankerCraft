@@ -202,7 +202,7 @@ public final class ImagenClient {
 
         try {
             Path configDir = FabricLoader.getInstance().getConfigDir();
-            Path file = configDir.resolve("clankercraft-llm.properties");
+            Path file = configDir.resolve("clankercraft.properties");
             if (!Files.exists(file)) return null;
             Properties props = new Properties();
             try (InputStream in = Files.newInputStream(file)) {

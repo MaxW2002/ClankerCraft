@@ -75,7 +75,12 @@ public final class LanguageManager {
         if (lang == null || lang.isBlank()) {
             lang = DEFAULT_LANGUAGE;
         }
-        return lang.toLowerCase();
+        // Normalize to base code (e.g., zh-CN -> zh)
+        String norm = lang.trim().toLowerCase();
+        norm = norm.replace('_', '-');
+        int dash = norm.indexOf('-');
+        if (dash > 0) norm = norm.substring(0, dash);
+        return norm;
     }
 
     /**
@@ -90,6 +95,10 @@ public final class LanguageManager {
             case "de" -> "Deutsch";
             case "it" -> "Italiano";
             case "pt" -> "Português";
+            case "ja" -> "日本語";
+            case "zh" -> "中文";
+            case "nl" -> "Nederlands";
+            case "ko" -> "한국어";
             default -> code.toUpperCase();
         };
     }

@@ -1,0 +1,37 @@
+{
+  "clanker.greeting": "Hoe gaat het, mijn Clanker!",
+  "clanker.farewell": "Doei!",
+  "clanker.no_nearby": "Geen Clanker in de buurt...",
+  "clanker.gone": "Clanker is hier niet meer. Gesprek beëindigd.",
+  "clanker.busy": "Clanker is bezig. Even geduld...",
+  "clanker.thinking": "Clanker is aan het nadenken... even geduld.",
+  "clanker.response_prefix": "Clanker: ",
+
+  "clanker.painting.start": "Oké, top! Ik maak een schilderij van '{0}'...",
+  "clanker.painting.done": "Ik ben klaar met schilderen. Alsjeblieft!",
+  "clanker.painting.failed": "Clanker kon het schilderij niet maken: {0}",
+  "clanker.painting.texture_failed": "Het is gelukt om de afbeelding te maken, maar het bijwerken van de texture is mislukt: {0}",
+  "clanker.painting.reload_textures": "Druk op F3+T om textures te herladen en het schilderij te zien",
+  "clanker.painting.prompt_required": "Geef me een prompt zoals:  @MakePainting <prompt>",
+
+  "clanker.music.start": "Oké, top! Ik componeer wat {0}-muziek!",
+  "clanker.music.done": "Ik ben klaar met componeren! Hier is je muziekplaat!",
+  "clanker.music.prompt_required": "Geef me een prompt zoals:  @makemusic <prompt>",
+  "clanker.music.failed": "!!! Voorbereiden van schijfaudio mislukt. Zorg dat ffmpeg is geïnstalleerd en in PATH staat",
+
+  "clanker.config.llm_not_configured": "!!! LLM niet geconfigureerd. Geef GOOGLE_AI_API_KEY via omgevingsvariabele, JVM -DGOOGLE_AI_API_KEY, of maak {0}. Start daarna opnieuw.",
+  "clanker.config.imagen_not_configured": "!!! Imagen niet geconfigureerd. Zorg dat GOOGLE_APPLICATION_CREDENTIALS, GCP_PROJECT_ID en GCP_LOCATION in {0} zijn ingesteld",
+  "clanker.config.lyria_not_configured": "!!! Lyria niet geconfigureerd. Zorg dat GOOGLE_APPLICATION_CREDENTIALS, GCP_PROJECT_ID en GCP_LOCATION in {0} zijn ingesteld",
+
+  "clanker.tts.quota_exceeded": "TTS-limiet overschreden. Alleen chat wordt afgespeeld.",
+  "clanker.tts.quota_exceeded_full": "TTS-limiet overschreden. Verdere audio wordt vandaag overgeslagen.",
+  "clanker.tts.unavailable": "TTS niet beschikbaar voor dit antwoord.",
+  "clanker.tts.error": "TTS-fout: {0}",
+
+  "clanker.personality.current": "Huidige persoonlijkheid: {0}",
+  "clanker.personality.available": "Beschikbare persoonlijkheden: {0}",
+  "clanker.personality.switched": "Gewisseld naar {0}-persoonlijkheid!",
+  "clanker.personality.unknown": "Onbekende persoonlijkheid '{0}'. Beschikbaar: {1}",
+  "clanker.personality.effect_next": "De nieuwe persoonlijkheid treedt in werking bij mijn volgende antwoord."
+}
+

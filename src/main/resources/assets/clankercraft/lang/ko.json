@@ -1,0 +1,37 @@
+{
+  "clanker.greeting": "내 클랭커, 뭐 해!",
+  "clanker.farewell": "잘 가!",
+  "clanker.no_nearby": "주변에 클랭커가 없습니다...",
+  "clanker.gone": "클랭커가 더 이상 여기 없습니다. 대화가 종료되었습니다.",
+  "clanker.busy": "클랭커가 바쁩니다. 잠시만 기다려 주세요...",
+  "clanker.thinking": "클랭커가 생각 중입니다... 잠시만요.",
+  "clanker.response_prefix": "Clanker: ",
+
+  "clanker.painting.start": "좋아! '{0}' 그림을 만들게...",
+  "clanker.painting.done": "그림을 완성했어! 여기 있어!",
+  "clanker.painting.failed": "클랭커가 그림을 만들지 못했습니다: {0}",
+  "clanker.painting.texture_failed": "이미지는 만들었지만 텍스처 업데이트에 실패했습니다: {0}",
+  "clanker.painting.reload_textures": "F3+T를 눌러 텍스처를 다시 로드하고 그림을 확인하세요",
+  "clanker.painting.prompt_required": "이렇게 프롬프트를 주세요:  @MakePainting <프롬프트>",
+
+  "clanker.music.start": "좋아! {0} 음악을 작곡할게!",
+  "clanker.music.done": "작곡을 마쳤어! 여기 네 음악 디스크!",
+  "clanker.music.prompt_required": "이렇게 프롬프트를 주세요:  @makemusic <프롬프트>",
+  "clanker.music.failed": "!!! 디스크 오디오 준비 실패. ffmpeg가 설치되어 있고 PATH에 등록되어 있는지 확인하세요",
+
+  "clanker.config.llm_not_configured": "!!! LLM이 구성되지 않았습니다. 환경 변수, JVM -DGOOGLE_AI_API_KEY 또는 {0}를 통해 GOOGLE_AI_API_KEY를 제공하세요. 그런 다음 다시 시작하세요.",
+  "clanker.config.imagen_not_configured": "!!! Imagen이 구성되지 않았습니다. {0}에 GOOGLE_APPLICATION_CREDENTIALS, GCP_PROJECT_ID, GCP_LOCATION이 설정되어 있는지 확인하세요",
+  "clanker.config.lyria_not_configured": "!!! Lyria가 구성되지 않았습니다. {0}에 GOOGLE_APPLICATION_CREDENTIALS, GCP_PROJECT_ID, GCP_LOCATION이 설정되어 있는지 확인하세요",
+
+  "clanker.tts.quota_exceeded": "TTS 할당량을 초과했습니다. 채팅만 재생합니다.",
+  "clanker.tts.quota_exceeded_full": "TTS 할당량을 초과했습니다. 오늘은 이후 오디오가 건너뜁니다.",
+  "clanker.tts.unavailable": "이 응답에 대해 TTS를 사용할 수 없습니다.",
+  "clanker.tts.error": "TTS 오류: {0}",
+
+  "clanker.personality.current": "현재 성격: {0}",
+  "clanker.personality.available": "사용 가능한 성격: {0}",
+  "clanker.personality.switched": "{0} 성격으로 전환했습니다!",
+  "clanker.personality.unknown": "알 수 없는 성격 '{0}'. 사용 가능: {1}",
+  "clanker.personality.effect_next": "새 성격은 다음 응답부터 적용됩니다."
+}
+

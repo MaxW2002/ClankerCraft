@@ -263,7 +263,7 @@ public final class ChatInteraction {
                     // Extract prompt after the trigger
                     String prompt = trimmed.substring(PAINT_TRIGGER.length()).trim();
                     if (!IMAGEN.isEnabled()) {
-                        String cfgPath = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve("clankercraft-llm.properties").toAbsolutePath());
+                        String cfgPath = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve("clankercraft.properties").toAbsolutePath());
                         player.sendMessage(Text.literal(LanguageManager.format("clanker.config.imagen_not_configured", cfgPath)));
                         return;
                     }
@@ -336,7 +336,7 @@ public final class ChatInteraction {
                 if (lower.startsWith(MUSIC_TRIGGER)) {
                     String prompt = trimmed.substring(MUSIC_TRIGGER.length()).trim();
                     if (!LYRIA.isEnabled()) {
-                        String cfgPath = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve("clankercraft-llm.properties").toAbsolutePath());
+                        String cfgPath = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve("clankercraft.properties").toAbsolutePath());
                         player.sendMessage(Text.literal(LanguageManager.format("clanker.config.lyria_not_configured", cfgPath)));
                         return;
                     }
@@ -405,7 +405,7 @@ public final class ChatInteraction {
                 // C) REGULAR CHAT MESSAGE --> LLM RESPONSE + TTS
                 session.appendUser(trimmed);
                 if (!LLM.isEnabled()) {
-                    String cfgPath = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve("clankercraft-llm.properties").toAbsolutePath());
+                    String cfgPath = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve("clankercraft.properties").toAbsolutePath());
                     player.sendMessage(Text.literal(LanguageManager.format("clanker.config.llm_not_configured", cfgPath)));
                     return;
                 }

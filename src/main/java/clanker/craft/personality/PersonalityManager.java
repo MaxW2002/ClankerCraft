@@ -56,8 +56,8 @@ public final class PersonalityManager {
             return runtimePersonalityOverride;
         }
         
-        // Read from: clankercraft-llm.properties --> CLANKER_PERSONALITY
-        Path cfgFile = FabricLoader.getInstance().getConfigDir().resolve("clankercraft-llm.properties");
+        // Read from: clankercraft.properties --> CLANKER_PERSONALITY
+        Path cfgFile = FabricLoader.getInstance().getConfigDir().resolve("clankercraft.properties");
         if (Files.exists(cfgFile)) {
             Properties props = new Properties();
             try (InputStream in = Files.newInputStream(cfgFile)) {

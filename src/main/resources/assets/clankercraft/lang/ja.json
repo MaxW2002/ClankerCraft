@@ -1,0 +1,37 @@
+{
+  "clanker.greeting": "やあ、クランカー！",
+  "clanker.farewell": "じゃあね！",
+  "clanker.no_nearby": "近くにクランカーはいません…",
+  "clanker.gone": "クランカーはもうここにいません。会話を終了します。",
+  "clanker.busy": "クランカーは今忙しいです。少々お待ちください…",
+  "clanker.thinking": "クランカーは考えています… 少々お待ちください。",
+  "clanker.response_prefix": "クランカー: ",
+
+  "clanker.painting.start": "いいね！『{0}』の絵を作成中...",
+  "clanker.painting.done": "絵が完成したよ！ どうぞ！",
+  "clanker.painting.failed": "クランカーは絵を作れませんでした: {0}",
+  "clanker.painting.texture_failed": "画像は作れましたが、テクスチャの更新に失敗しました: {0}",
+  "clanker.painting.reload_textures": "F3+T を押してテクスチャを再読み込みすると絵が見えます",
+  "clanker.painting.prompt_required": "次のようにプロンプトをください:  @MakePainting <説明>",
+
+  "clanker.music.start": "いいね！ {0} の音楽を作曲中！",
+  "clanker.music.done": "作曲完了！ ミュージックディスクをどうぞ！",
+  "clanker.music.prompt_required": "次のようにプロンプトをください:  @makemusic <説明>",
+  "clanker.music.failed": "!!! ディスク音声の準備に失敗しました。ffmpeg がインストールされ、PATH に通っていることを確認してください",
+
+  "clanker.config.llm_not_configured": "!!! LLM が未設定です。環境変数、JVM -DGOOGLE_AI_API_KEY、または {0} の作成で GOOGLE_AI_API_KEY を指定してください。再起動してください。",
+  "clanker.config.imagen_not_configured": "!!! Imagen が未設定です。{0} に GOOGLE_APPLICATION_CREDENTIALS、GCP_PROJECT_ID、GCP_LOCATION が設定されていることを確認してください",
+  "clanker.config.lyria_not_configured": "!!! Lyria が未設定です。{0} に GOOGLE_APPLICATION_CREDENTIALS、GCP_PROJECT_ID、GCP_LOCATION が設定されていることを確認してください",
+
+  "clanker.tts.quota_exceeded": "TTS の上限に達しました。チャットのみ再生します。",
+  "clanker.tts.quota_exceeded_full": "TTS の上限に達しました。本日は音声をスキップします。",
+  "clanker.tts.unavailable": "この返答では TTS は利用できません。",
+  "clanker.tts.error": "TTS エラー: {0}",
+
+  "clanker.personality.current": "現在の性格: {0}",
+  "clanker.personality.available": "利用可能な性格: {0}",
+  "clanker.personality.switched": "{0} の性格に切り替えました！",
+  "clanker.personality.unknown": "不明な性格 '{0}'。利用可能: {1}",
+  "clanker.personality.effect_next": "新しい性格は次の返答から有効になります。"
+}
+

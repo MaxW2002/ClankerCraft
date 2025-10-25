@@ -48,7 +48,7 @@ You'll need API keys for these services. All keys are configured in a single pro
 
 ### Step 1: Create Your Config File
 1. Find the sample config file: `clankercraft-llm.sample.properties` in this repository
-2. Copy it to your Minecraft config directory: `<minecraft>/config/clankercraft-llm.properties`
+2. Copy it to your Minecraft config directory: `<minecraft>/config/clankercraft.properties`
 3. Open the file in a text editor
 
 ### Step 2: Get API Keys
@@ -66,7 +66,7 @@ You'll need API keys for these services. All keys are configured in a single pro
 2. Create an API key
 3. Add it to your config file:
    ```
-   GOOGLE_TTS_API_KEY=your_key_here
+   GOOGLE_CLOUD_API_KEY=your_key_here
    ```
 
 **For Images and Music**

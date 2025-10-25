@@ -170,7 +170,7 @@ public final class ClientTTS {
 
     private PcmAudio synthesizePcm(String text) throws Exception {
         String apiKey = resolveTtsKey();
-        if (apiKey == null || apiKey.isBlank()) throw new IllegalStateException("No GOOGLE_TTS_API_KEY configured (you can also set GOOGLE_CLOUD_API_KEY). See clankercraft-llm.properties");
+        if (apiKey == null || apiKey.isBlank()) throw new IllegalStateException("No GOOGLE_CLOUD_API_KEY configured (you can also set GOOGLE_CLOUD_API_KEY). See clankercraft.properties");
 
         // Sanitize text to remove symbols that shouldn't be pronounced
         String sanitizedText = sanitizeTextForTts(text);
@@ -183,14 +183,9 @@ public final class ClientTTS {
         body.add("input", input);
 
         JsonObject voice = new JsonObject();
-        String lang = resolve("TTS_LANGUAGE_CODE");
-        // If no explicit TTS language is set, derive it from CLANKER_LANGUAGE
-        if (lang == null || lang.isBlank()) {
-            String clankerLang = LanguageManager.getConfiguredLanguage();
-            lang = mapLanguageCodeToTTS(clankerLang);
-        }
+        String lang = resolveLanguageCode();
         voice.addProperty("languageCode", lang);
-        String voiceName = resolve("TTS_VOICE_NAME"); // e.g., "en-US-Chirp-HD-F"
+        String voiceName = resolveVoiceName(lang); // prefer explicit, else derive
         if (voiceName != null && !voiceName.isBlank()) voice.addProperty("name", voiceName);
         body.add("voice", voice);
 
@@ -198,8 +193,8 @@ public final class ClientTTS {
         audioCfg.addProperty("audioEncoding", "LINEAR16");
         audioCfg.addProperty("sampleRateHertz", rate);
 
-        // Chirp 3: HD voices (e.g., en-US-Chirp-HD-F) do not support speakingRate/pitch.
-        boolean isChirp = voiceName != null && voiceName.toLowerCase().contains("chirp");
+        // Chirp HD voices (e.g., en-US-Chirp-HD-F) do not support speakingRate/pitch.
+        boolean isChirp = voiceName != null && voiceName.toLowerCase(Locale.ROOT).contains("chirp");
         if (!isChirp) {
             String rateStr = resolve("TTS_SPEAKING_RATE");
             if (rateStr != null && !rateStr.isBlank()) {
@@ -254,7 +249,7 @@ public final class ClientTTS {
         // config file
         try {
             Path configDir = FabricLoader.getInstance().getConfigDir();
-            Path file = configDir.resolve("clankercraft-llm.properties");
+            Path file = configDir.resolve("clankercraft.properties");
             if (!Files.exists(file)) return null;
             Properties props = new Properties();
             try (InputStream in = Files.newInputStream(file)) { props.load(in); }
@@ -265,19 +260,53 @@ public final class ClientTTS {
         }
     }
 
+    private static String resolveLanguageCode() {
+        String clankerLang = LanguageManager.getConfiguredLanguage();
+        return normalizeLocale(mapLanguageCodeToTTS(clankerLang));
+    }
+
+    private static String resolveVoiceName(String languageCode) {
+        String explicit = resolve("TTS_VOICE_NAME");
+        if (explicit != null && !explicit.isBlank()) return explicit.trim();
+        // Derive from family + quality + style
+        String family = tokenOr("TTS_VOICE_FAMILY", "Chirp");
+        String quality = tokenOr("TTS_VOICE_QUALITY", "HD").toUpperCase(Locale.ROOT);
+        // Basic guard to common values; leave others as-is in case of future variants
+        if (!quality.equals("HD") && !quality.equals("SD")) quality = "HD";
+        String style = tokenOr("TTS_VOICE_STYLE", "F").toUpperCase(Locale.ROOT);
+        return normalizeLocale(languageCode) + "-" + family + "-" + quality + "-" + style;
+    }
+
     /**
      * Map a simple language code (e.g., "en", "es") to a TTS language code (e.g., "en-US", "es-ES").
      */
     private static String mapLanguageCodeToTTS(String langCode) {
-        return switch (langCode.toLowerCase()) {
-            case "en" -> "en-US";
-            case "es" -> "es-ES";
-            case "fr" -> "fr-FR";
-            case "de" -> "de-DE";
-            case "it" -> "it-IT";
-            case "pt" -> "pt-PT";
-            default -> "en-US";
-        };
+        switch (langCode == null ? "" : langCode.toLowerCase(Locale.ROOT)) {
+            case "en": return "en-US";
+            case "es": return "es-ES";
+            case "fr": return "fr-FR";
+            case "de": return "de-DE";
+            case "it": return "it-IT";
+            case "pt": return "pt-BR";
+            case "ja": return "ja-JP";
+            case "ko": return "ko-KR";
+            case "zh": return "zh-CN";
+            case "nl": return "nl-NL";
+            default: return "en-US";
+        }
+    }
+
+    private static String normalizeLocale(String tag) {
+        if (tag == null || tag.isBlank()) return "en-US";
+        String[] parts = tag.trim().replace('_', '-').split("-");
+        if (parts.length == 1) return parts[0].toLowerCase(Locale.ROOT);
+        return parts[0].toLowerCase(Locale.ROOT) + "-" + parts[1].toUpperCase(Locale.ROOT);
+    }
+
+    private static String tokenOr(String key, String def) {
+        String v = resolve(key);
+        if (v == null || v.isBlank()) return def;
+        return v.trim();
     }
 
     private static double clamp(double v, double lo, double hi) {

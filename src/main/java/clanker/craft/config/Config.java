@@ -11,7 +11,7 @@ import java.util.Properties;
 
 /**
  * Simple centralized config resolver for ClankerCraft.
- * Precedence: System property -> Environment variable -> Fabric config file (clankercraft-llm.properties).
+ * Precedence: System property -> Environment variable -> Fabric config file (clankercraft.properties).
  *
  * Provides convenience alias resolution so users can provide any of the listed keys.
  */
@@ -43,7 +43,7 @@ public final class Config {
     }
 
     public static Path configFile() {
-        return FabricLoader.getInstance().getConfigDir().resolve("clankercraft-llm.properties");
+        return FabricLoader.getInstance().getConfigDir().resolve("clankercraft.properties");
     }
 
     private static Properties props() {
@@ -123,8 +123,7 @@ public final class Config {
 
     public static String ttsApiKey() {
         return get(
-                // Accept both; prefer GOOGLE_TTS_API_KEY in docs
-                "GOOGLE_TTS_API_KEY",
+                // Accept both;
                 "GOOGLE_CLOUD_API_KEY",
                 "TEXT_TO_SPEECH_API_KEY"
         );
