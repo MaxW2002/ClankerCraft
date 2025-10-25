@@ -1,5 +1,5 @@
 # ClankerCraft
-
+<img width="2100" height="1080" alt="banna2" src="https://github.com/user-attachments/assets/6cc5c323-70b5-4882-93ab-b5b1033a9b9b" />
 A Minecraft Fabric mod that brings AI-powered mobs and creative tools to your world. Chat with friendly companions, generate custom paintings, and create music—all powered by Google's AI services.
 
 ---
