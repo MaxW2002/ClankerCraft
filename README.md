@@ -46,10 +46,9 @@ You'll need API keys for these services. All keys are configured in a single pro
 - Minecraft with Fabric Loader and Fabric API installed
 - FFmpeg installed and available in your system PATH (required for music generation)
 
-### Step 1: Create Your Config File
-1. Find the sample config file: `clankercraft-llm.sample.properties` in this repository
-2. Copy it to your Minecraft config directory: `<minecraft>/config/clankercraft.properties`
-3. Open the file in a text editor
+### Step 1: Find Your Config File
+1. Find the config file: `clankercraft.properties` in the `run/config` folder in this repository
+2. Open the file in a text editor
 
 ### Step 2: Get API Keys
 
@@ -61,30 +60,92 @@ You'll need API keys for these services. All keys are configured in a single pro
    GOOGLE_AI_STUDIO_API_KEY=your_key_here
    ```
 
-**For TTS**
-1. Enable the Google Cloud Text-to-Speech API in your Google Cloud Console
-2. Create an API key
-3. Add it to your config file:
+**Google Cloud**
+1. Create a new google cloud project
+2. Go to _project info_ and add the _Project ID_ to your config file:
+   ```
+   GOOGLE_CLOUD_PROJECT_ID=your_project-id_here
+   ```
+3. Next, in the Google Cloud console go to _API's and Services_ and then _Credentials_
+4. Click _Create credentials_ and set up an API key for your Google Cloud project
+5. Once created, paste your Google Cloud API key in the config file:
    ```
    GOOGLE_CLOUD_API_KEY=your_key_here
    ```
 
-**For Images and Music**
-1. Create a Google Cloud project
-2. Enable Vertex AI API
-3. Create a service account and download the JSON credentials file
-4. Add to your config file:
+**For TTS**
+1. In the Google Cloud console go to _API's and Services_ 
+2. Under _Enabled APIs & Services_, enable the _Cloud Text-to-Speech API_ 
+
+**For Images**
+1. In the Google Cloud console go to _API's and Services_ 
+2. Under _Enabled APIs & Services_, enable the _Vertex AI API_ 
+
+**For Music**
+1. Make sure the _Vertex AI API_ is enabled in your Google Cloud project
+2. Make sure **_FFMPEG_** is installed on your PATH (this is used for audio conversion)
+
+**Service Account**
+1. Next, in the Google Cloud console go to _API's and Services_ and then _Credentials_
+2. Click _Create credentials_ and create a _Service account_
+3. Under _Permissions_ select the following roles to this service account:
+    - _Service Usage Consumer_
+    - _Storage Object Viewer_
+    - _Vertex AI User_
+4. Next, in the Google Cloud console go to _IAM & Admin_ and then _Service Accounts_
+5. Open your created service account and go to _keys_
+6. Create a new key (JSON file) and store it locally on your PC
+7. Once saved, paste the path to this local JSON file in the config file:
    ```
    GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/credentials.json
-   GOOGLE_CLOUD_PROJECT_ID=your-project-id
-   GCP_LOCATION=us-central1
    ```
 
-### Step 3: Launch Minecraft
+
+### Step 3: Further configuration settings
+- Optionally configure gemini version to preferred model (_e.g. gemini-2.5-flash_). The gemini model already provided in the config file (_1.5-flash_) gives the best performance relative to its cost.
+- Optionally change the style of the TTS voice under '**TTS_VOICE_STYLE**'. Check out the Google Cloud documentation on available Chirp 3 HD voices (_https://cloud.google.com/text-to-speech/docs/chirp3-hd_).
+
+Example for changing the default voice to male:
+```
+TTS_VOICE_STYLE=D
+```
+  
+- Optionally change the personality of the clanker. Currently base supported personalities include:
+     - Excited 
+     - Grumpy
+     - Robotic
+
+Example for changing the default personality to grumpy:
+```
+CLANKER_PERSONALITY=Grumpy
+```
+
+- Optionally change the language of ClankerCraft, which will adapt the Clanker's language. Currently supported languages include:
+     - Dutch (_nl_)
+     - English (_en_)
+     - German (_de_)
+     - Spanish (_es_)
+     - French (_fr_)
+     - Italian (_it_)
+     - Japanese (_ja_)
+     - Korean (_ko_)
+     - Portuguese (_pt_)
+     - Chinese Mandarin (_zh_)
+
+       in order to use any of these languages simply change the variable for '**CLANKER_LANGUAGE**' to the given tag for the languages above.
+
+Example for changing the default language to Japanese:
+     
+```
+CLANKER_LANGUAGE=ja
+```
+
+
+### Step 4: Launch Minecraft
 1. Start Minecraft with the ClankerCraft mod installed
 2. Check the console for confirmation messages about enabled features
 
-### Step 4: Test the Features
+### Step 5: Test the Features
 
 **Test Chat:**
 - Give yourself a Clanker spawn egg: `/give @s clankercraft:clanker_spawn_egg`
