@@ -75,11 +75,21 @@ public final class LanguageManager {
         if (lang == null || lang.isBlank()) {
             lang = DEFAULT_LANGUAGE;
         }
-        // Normalize to base code (e.g., zh-CN -> zh)
+        // Normalize to base code (e.g., zh-CN -> zh, cmn-Hans -> cmn)
         String norm = lang.trim().toLowerCase();
         norm = norm.replace('_', '-');
         int dash = norm.indexOf('-');
         if (dash > 0) norm = norm.substring(0, dash);
+        
+        // Map language codes to our supported files
+        norm = switch (norm) {
+            case "zh" -> "cmn"; // Chinese -> Mandarin Chinese
+            case "yue" -> "cmn"; // Cantonese Chinese -> use Mandarin file
+            default -> norm;
+        };
+        
+        System.out.println("[ClankerCraft] Configured language: raw=" + lang + ", normalized=" + norm);
+        
         return norm;
     }
 
@@ -96,7 +106,7 @@ public final class LanguageManager {
             case "it" -> "Italiano";
             case "pt" -> "Português";
             case "ja" -> "日本語";
-            case "zh" -> "中文";
+            case "cmn" -> "中文";
             case "nl" -> "Nederlands";
             case "ko" -> "한국어";
             default -> code.toUpperCase();
@@ -129,6 +139,8 @@ public final class LanguageManager {
         Map<String, String> translations = new HashMap<>();
         String resourcePath = "/assets/clankercraft/lang/" + langCode + ".json";
         
+        System.out.println("[ClankerCraft] Loading translations for language: " + langCode + " from path: " + resourcePath);
+        
         try (InputStream in = LanguageManager.class.getResourceAsStream(resourcePath)) {
             if (in != null) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
@@ -139,10 +151,13 @@ public final class LanguageManager {
                     }
                     JsonObject json = GSON.fromJson(jsonBuilder.toString(), JsonObject.class);
                     json.entrySet().forEach(entry -> translations.put(entry.getKey(), entry.getValue().getAsString()));
+                    System.out.println("[ClankerCraft] Successfully loaded " + translations.size() + " translations for " + langCode);
                 }
+            } else {
+                System.out.println("[ClankerCraft] WARNING: Language file not found: " + resourcePath);
             }
         } catch (Exception e) {
-            // Silent failure - will use fallback
+            System.out.println("[ClankerCraft] ERROR loading translations: " + e.getMessage());
         }
         
         // Cache the result

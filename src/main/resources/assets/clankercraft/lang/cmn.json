@@ -7,7 +7,7 @@
   "clanker.thinking": "Clanker 正在思考... 请稍等。",
   "clanker.response_prefix": "Clanker： ",
 
-  "clanker.painting.start": "太好了！我正在为“{0}”创作一幅画...",
+  "clanker.painting.start": "太好了！我正在为 \"{0}\" 创作一幅画...",
   "clanker.painting.done": "我已经画完了。给你！",
   "clanker.painting.failed": "Clanker 未能完成绘画：{0}",
   "clanker.painting.texture_failed": "我成功生成了图片，但更新材质失败：{0}",
@@ -31,7 +31,7 @@
   "clanker.personality.current": "当前人格：{0}",
   "clanker.personality.available": "可用人格：{0}",
   "clanker.personality.switched": "已切换到 {0} 人格！",
-  "clanker.personality.unknown": "未知人格"{0}"。可用：{1}",
+  "clanker.personality.unknown": "未知人格 \"{0}\"。可用：{1}",
   "clanker.personality.effect_next": "新的人格将从我的下一次回复生效。",
   
   "clanker.follow.started": "我现在跟着你！",

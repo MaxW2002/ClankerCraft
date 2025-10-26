@@ -268,13 +268,44 @@ public final class ClientTTS {
     private static String resolveVoiceName(String languageCode) {
         String explicit = resolve("TTS_VOICE_NAME");
         if (explicit != null && !explicit.isBlank()) return explicit.trim();
+        
         // Derive from family + quality + style
         String family = tokenOr("TTS_VOICE_FAMILY", "Chirp");
         String quality = tokenOr("TTS_VOICE_QUALITY", "HD").toUpperCase(Locale.ROOT);
         // Basic guard to common values; leave others as-is in case of future variants
         if (!quality.equals("HD") && !quality.equals("SD")) quality = "HD";
         String style = tokenOr("TTS_VOICE_STYLE", "F").toUpperCase(Locale.ROOT);
-        return normalizeLocale(languageCode) + "-" + family + "-" + quality + "-" + style;
+        
+        String normalizedLang = normalizeLocale(languageCode);
+        
+        // Chirp3 voices are only available for en-US
+        // For other languages, fall back to appropriate voice families
+        if (family.equalsIgnoreCase("Chirp3") && !normalizedLang.equals("en-US")) {
+            // Use Neural2 or Wavenet voices for better quality on non-English languages
+            return getDefaultVoiceForLanguage(normalizedLang);
+        }
+        
+        return normalizedLang + "-" + family + "-" + quality + "-" + style;
+    }
+    
+    /**
+     * Get default high-quality voice for a given language when Chirp3 is not available.
+     */
+    private static String getDefaultVoiceForLanguage(String languageCode) {
+        // Map to best available voices for each language
+        switch (languageCode) {
+            case "cmn-CN": return "cmn-CN-Wavenet-A"; // Chinese female voice
+            case "cmn-TW": return "cmn-TW-Wavenet-A"; // Taiwanese Mandarin
+            case "ja-JP": return "ja-JP-Neural2-B"; // Japanese
+            case "ko-KR": return "ko-KR-Neural2-A"; // Korean
+            case "es-ES": return "es-ES-Neural2-A"; // Spanish (Spain)
+            case "fr-FR": return "fr-FR-Neural2-A"; // French
+            case "de-DE": return "de-DE-Neural2-A"; // German
+            case "it-IT": return "it-IT-Neural2-A"; // Italian
+            case "pt-BR": return "pt-BR-Neural2-A"; // Portuguese (Brazil)
+            case "nl-NL": return "nl-NL-Wavenet-A"; // Dutch
+            default: return languageCode + "-Wavenet-A"; // Fallback to Wavenet
+        }
     }
 
     /**
@@ -290,7 +321,7 @@ public final class ClientTTS {
             case "pt": return "pt-BR";
             case "ja": return "ja-JP";
             case "ko": return "ko-KR";
-            case "zh": return "zh-CN";
+            case "cmn": return "cmn-CN";
             case "nl": return "nl-NL";
             default: return "en-US";
         }
