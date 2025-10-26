@@ -1,6 +1,6 @@
 # ClankerCraft
 <img width="2100" height="1080" alt="banna2" src="https://github.com/user-attachments/assets/6cc5c323-70b5-4882-93ab-b5b1033a9b9b" />
-A Minecraft Fabric mod that brings AI-powered mobs and creative tools to your world. Chat with friendly companions, generate custom paintings, and create music—all powered by Google's AI services.
+A Minecraft Fabric mod that brings an AI-powered mob with creative tools to your world. Chat with your friendly companion, generate custom paintings, and create music, all powered by Google's AI services.
 
 ---
 
@@ -13,7 +13,7 @@ A friendly companion mob that players can talk to. Based on the Copper Golem wit
 Start conversations by typing `@clanker` in chat. The mob responds using AI and remembers your conversation. End with `@byebye`. Each player gets their own conversation session, so multiple players can chat with different Clankers at once.
 
 ### AI Conversations
-Powered by Google's Gemini language model. Messages are sent to the Gemini API with conversation history, and the model generates natural responses. Customize the Clanker's personality using text files—choose from Excited, Grumpy, or Robotic, or create your own.
+Powered by Google's Gemini language model. Messages are sent to the Gemini API with conversation history, and the model generates natural responses. Customize the Clanker's personality using text files: choose from Excited, Grumpy, or Robotic, or create your own.
 
 ### Text-to-Speech
 Clanker's responses are spoken aloud using Google Cloud Text-to-Speech with Chirp 3 HD voices. Audio plays positionally in 3D space, so you hear the voice coming from the Clanker's location.
@@ -139,9 +139,9 @@ TTS_VOICE_STYLE=D
      - Grumpy
      - Robotic
 
-Example for changing the default personality to grumpy:
+Example for changing the default personality to excited:
 ```
-CLANKER_PERSONALITY=Grumpy
+CLANKER_PERSONALITY=Excited
 ```
 
 - Optionally change the language of ClankerCraft, which will adapt the Clanker's language. Currently supported languages include:
@@ -154,7 +154,7 @@ CLANKER_PERSONALITY=Grumpy
      - Japanese (_ja_)
      - Korean (_ko_)
      - Portuguese (_pt_)
-     - Chinese Mandarin (_zh_)
+     - Chinese Mandarin (_cmn_)
 
        in order to use any of these languages simply change the variable for '**CLANKER_LANGUAGE**' to the given tag for the languages above.
 
@@ -166,15 +166,14 @@ CLANKER_LANGUAGE=ja
 
 
 ### Step 4: Launch Minecraft
-1. Start Minecraft with the ClankerCraft mod installed
-2. Check the console for confirmation messages about enabled features
+1. Start the ClankerCraft mod with `./gradlew runClient`
 
 ### Step 5: Test the Features
 
 **Test Chat:**
-- Give yourself a Clanker spawn egg: `/give @s clankercraft:clanker_spawn_egg`
+- Find the Clanker spawn egg in the inventory
 - Spawn a Clanker
-- Type `@clanker hello` in chat
+- Type `@clanker` in chat
 - You should see a response
 
 **Test TTS:**
