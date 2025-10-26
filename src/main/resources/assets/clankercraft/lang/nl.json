@@ -32,6 +32,11 @@
   "clanker.personality.available": "Beschikbare persoonlijkheden: {0}",
   "clanker.personality.switched": "Gewisseld naar {0}-persoonlijkheid!",
   "clanker.personality.unknown": "Onbekende persoonlijkheid '{0}'. Beschikbaar: {1}",
-  "clanker.personality.effect_next": "De nieuwe persoonlijkheid treedt in werking bij mijn volgende antwoord."
+  "clanker.personality.effect_next": "De nieuwe persoonlijkheid treedt in werking bij mijn volgende antwoord.",
+  
+  "clanker.follow.started": "Ik volg je nu!",
+  "clanker.follow.no_session": "Je moet eerst een gesprek met @clanker starten!",
+  "clanker.stay.stopped": "Ik blijf hier.",
+  "clanker.stay.no_session": "Je moet eerst een gesprek met @clanker starten!"
 }
 

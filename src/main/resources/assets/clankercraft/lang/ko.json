@@ -32,6 +32,11 @@
   "clanker.personality.available": "사용 가능한 성격: {0}",
   "clanker.personality.switched": "{0} 성격으로 전환했습니다!",
   "clanker.personality.unknown": "알 수 없는 성격 '{0}'. 사용 가능: {1}",
-  "clanker.personality.effect_next": "새 성격은 다음 응답부터 적용됩니다."
+  "clanker.personality.effect_next": "새 성격은 다음 응답부터 적용됩니다.",
+  
+  "clanker.follow.started": "이제 따라갈게!",
+  "clanker.follow.no_session": "먼저 @clanker로 대화를 시작해야 해요!",
+  "clanker.stay.stopped": "여기 있을게.",
+  "clanker.stay.no_session": "먼저 @clanker로 대화를 시작해야 해요!"
 }
 

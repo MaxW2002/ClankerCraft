@@ -31,7 +31,12 @@
   "clanker.personality.current": "当前人格：{0}",
   "clanker.personality.available": "可用人格：{0}",
   "clanker.personality.switched": "已切换到 {0} 人格！",
-  "clanker.personality.unknown": "未知人格“{0}”。可用：{1}",
-  "clanker.personality.effect_next": "新的人格将从我的下一次回复生效。"
+  "clanker.personality.unknown": "未知人格"{0}"。可用：{1}",
+  "clanker.personality.effect_next": "新的人格将从我的下一次回复生效。",
+  
+  "clanker.follow.started": "我现在跟着你！",
+  "clanker.follow.no_session": "你必须先用 @clanker 开始对话！",
+  "clanker.stay.stopped": "我会待在这里。",
+  "clanker.stay.no_session": "你必须先用 @clanker 开始对话！"
 }
 

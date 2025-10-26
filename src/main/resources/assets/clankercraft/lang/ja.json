@@ -32,6 +32,11 @@
   "clanker.personality.available": "利用可能な性格: {0}",
   "clanker.personality.switched": "{0} の性格に切り替えました！",
   "clanker.personality.unknown": "不明な性格 '{0}'。利用可能: {1}",
-  "clanker.personality.effect_next": "新しい性格は次の返答から有効になります。"
+  "clanker.personality.effect_next": "新しい性格は次の返答から有効になります。",
+  
+  "clanker.follow.started": "今からついていくよ！",
+  "clanker.follow.no_session": "まず @clanker で会話を始めてください！",
+  "clanker.stay.stopped": "ここで待ってるよ。",
+  "clanker.stay.no_session": "まず @clanker で会話を始めてください！"
 }
 
