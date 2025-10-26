@@ -26,6 +26,31 @@ Generate music discs by typing `@makemusic <prompt>`. Uses Vertex AI's Lyria 2 m
 
 ---
 
+## Work Division
+
+This project was developed collaboratively by **MaxW2002** and **zebby09**.
+
+### MaxW2002
+- Initial project setup and repository structure
+- Clanker mob implementation (model, textures, spawn egg)
+- Core chat system and AI integration with Gemini
+- Text-to-Speech implementation using Google Cloud TTS
+- Image generation system with Vertex AI Imagen
+- Music generation system with Vertex AI Lyria 2
+- Personality system implementation
+- Video editing
+
+### zebby09
+- Clanker follow and stay commands
+- In-game personality switching functionality
+- Clanker self-awareness features
+- Textures for clanker and clanker egg
+- Multi-language translations and localization
+- Voice configuration improvements
+- Video editing
+
+---
+
 ## AI and Cloud Services
 
 ClankerCraft uses the following Google AI services:
@@ -169,3 +194,5 @@ CLANKER_LANGUAGE=ja
 - Wait for the success message
 - Pick up the generated disc
 - Place it in a jukebox to play
+
+---
