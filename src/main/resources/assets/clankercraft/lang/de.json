@@ -32,5 +32,10 @@
   "clanker.personality.available": "Verfügbare Persönlichkeiten: {0}",
   "clanker.personality.switched": "Zu {0}-Persönlichkeit gewechselt!",
   "clanker.personality.unknown": "Unbekannte Persönlichkeit '{0}'. Verfügbar: {1}",
-  "clanker.personality.effect_next": "Die neue Persönlichkeit wird in meiner nächsten Antwort wirksam."
+  "clanker.personality.effect_next": "Die neue Persönlichkeit wird in meiner nächsten Antwort wirksam.",
+  
+  "clanker.follow.started": "Ich folge dir jetzt!",
+  "clanker.follow.no_session": "Du musst zuerst ein Gespräch mit @clanker beginnen!",
+  "clanker.stay.stopped": "Ich bleibe hier.",
+  "clanker.stay.no_session": "Du musst zuerst ein Gespräch mit @clanker beginnen!"
 }

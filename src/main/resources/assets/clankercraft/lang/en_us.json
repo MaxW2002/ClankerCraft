@@ -1,4 +1,9 @@
 {
   "entity.clankercraft.clanker": "Clanker",
-  "item.clankercraft.clanker_spawner": "Clanker Spawn Egg"
+  "item.clankercraft.clanker_spawner": "Clanker Spawn Egg",
+  
+  "clanker.follow.started": "I'll follow you now!",
+  "clanker.follow.no_session": "You must start a conversation with @clanker first!",
+  "clanker.stay.stopped": "I'll stay here.",
+  "clanker.stay.no_session": "You must start a conversation with @clanker first!"
 }

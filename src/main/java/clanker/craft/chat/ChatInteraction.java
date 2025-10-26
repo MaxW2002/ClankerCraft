@@ -14,6 +14,7 @@ import clanker.craft.i18n.LanguageManager;
 
 // NETWORKING
 import clanker.craft.network.TTSSpeakS2CPayload;
+import clanker.craft.network.ReloadResourcesS2CPayload;
 
 // MINECRAFT
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
@@ -197,7 +198,7 @@ public final class ChatInteraction {
                 if (lower.startsWith(FOLLOW_TRIGGER)) {
                     Session session = SESSIONS.get(player.getUuid());
                     if (session == null) {
-                        player.sendMessage(Text.literal("You must start a conversation with @clanker first!"));
+                        player.sendMessage(Text.literal(LanguageManager.get("clanker.follow.no_session")));
                         return;
                     }
                     
@@ -213,7 +214,7 @@ public final class ChatInteraction {
                     session.awaitingFreeze = false; // Don't freeze while following
                     mob.setAiDisabled(false); // Unfreeze the mob
                     
-                    String followMsg = "I'll follow you now!";
+                    String followMsg = LanguageManager.get("clanker.follow.started");
                     player.sendMessage(Text.literal(followMsg));
                     ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(followMsg, mob.getId()));
                     return;
@@ -223,7 +224,7 @@ public final class ChatInteraction {
                 if (lower.startsWith(STAY_TRIGGER)) {
                     Session session = SESSIONS.get(player.getUuid());
                     if (session == null) {
-                        player.sendMessage(Text.literal("You must start a conversation with @clanker first!"));
+                        player.sendMessage(Text.literal(LanguageManager.get("clanker.stay.no_session")));
                         return;
                     }
                     
@@ -239,7 +240,7 @@ public final class ChatInteraction {
                     mob.setAiDisabled(true); // Freeze the mob
                     mob.getNavigation().stop(); // Stop any current navigation
                     
-                    String stayMsg = "I'll stay here.";
+                    String stayMsg = LanguageManager.get("clanker.stay.stopped");
                     player.sendMessage(Text.literal(stayMsg));
                     ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(stayMsg, mob.getId()));
                     return;
@@ -298,7 +299,6 @@ public final class ChatInteraction {
                                     } else {
                                         try {
                                             ImagenClient.updatePaintingTexture(java.nio.file.Path.of(result));
-                                            player.sendMessage(Text.literal(LanguageManager.get("clanker.painting.reload_textures")));
 
                                             // Drop a painting item at the mob's location
                                             ClankerEntity clanker = findMobByUuid(world, session.mobUuid);
@@ -321,6 +321,9 @@ public final class ChatInteraction {
                                                 clanker.dropStack(world, paintingStack);
                                                 player.sendMessage(Text.literal(doneMsg));
                                                 ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(doneMsg, clanker.getId()));
+                                                
+                                                // Automatically reload resources on client
+                                                ServerPlayNetworking.send(player, new ReloadResourcesS2CPayload());
                                             }
                                         } catch (Exception e) {
                                             player.sendMessage(Text.literal(LanguageManager.format("clanker.painting.texture_failed", e.getMessage())));
@@ -394,6 +397,9 @@ public final class ChatInteraction {
                                             String doneMsg = LanguageManager.get("clanker.music.done");
                                             player.sendMessage(Text.literal(doneMsg));
                                             ServerPlayNetworking.send(player, new TTSSpeakS2CPayload(doneMsg, clanker.getId()));
+                                            
+                                            // Automatically reload resources on client
+                                            ServerPlayNetworking.send(player, new ReloadResourcesS2CPayload());
                                         }
                                     }
                                 });
