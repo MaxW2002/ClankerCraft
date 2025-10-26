@@ -1,5 +1,5 @@
 # ClankerCraft
-<img width="2100" height="1080" alt="banna2" src="https://github.com/user-attachments/assets/6cc5c323-70b5-4882-93ab-b5b1033a9b9b" />
+<img width="1920" height="1080" alt="CLANKER BANNER" src="https://github.com/user-attachments/assets/60806b50-dc2f-45c0-b470-37755e9c6f04" />
 A Minecraft Fabric mod that brings an AI-powered mob with creative tools to your world. Chat with your friendly companion, generate custom paintings, and create music, all powered by Google's AI services.
 
 ---
