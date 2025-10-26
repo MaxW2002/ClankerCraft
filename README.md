@@ -10,7 +10,7 @@ A Minecraft Fabric mod that brings an AI-powered mob with creative tools to your
 A friendly companion mob that players can talk to. Based on the Copper Golem with all hostile behaviors removed. Spawn using the Clanker spawn egg.
 
 ### Chat System
-Start conversations by typing `@clanker` in chat. The mob responds using AI and remembers your conversation. End with `@byebye`. Each player gets their own conversation session, so multiple players can chat with different Clankers at once.
+Start conversations by typing `@clanker` in chat. The mob responds using AI and remembers your conversation. End with `@bye`. Each player gets their own conversation session, so multiple players can chat with different Clankers at once.
 
 ### AI Conversations
 Powered by Google's Gemini language model. Messages are sent to the Gemini API with conversation history, and the model generates natural responses. Customize the Clanker's personality using text files: choose from Excited, Grumpy, or Robotic, or create your own.
@@ -131,7 +131,7 @@ You'll need API keys for these services. All keys are configured in a single pro
 
 Example for changing the default voice to male:
 ```
-TTS_VOICE_STYLE=D
+TTS_VOICE_STYLE=Charon
 ```
   
 - Optionally change the personality of the clanker. Currently base supported personalities include:
