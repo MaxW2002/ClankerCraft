@@ -32,7 +32,6 @@ This project was developed collaboratively by **MaxW2002** and **zebby09**.
 
 ### MaxW2002
 - Initial project setup and repository structure
-- Clanker mob implementation (model, textures, spawn egg)
 - Core chat system and AI integration with Gemini
 - Text-to-Speech implementation using Google Cloud TTS
 - Image generation system with Vertex AI Imagen
