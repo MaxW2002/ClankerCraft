@@ -198,3 +198,5 @@ CLANKER_LANGUAGE=ja
 - Place it in a jukebox to play
 
 ---
+
+_For any further questions, please reach out to us by sending an e-mail to: maxwillemsen171@gmail.com_
