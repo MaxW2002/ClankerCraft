@@ -4,7 +4,7 @@ A Minecraft Fabric mod that brings an AI-powered mob with creative tools to your
 
 
 Check out the trailer here:
-https://www.youtube.com/watch?v=FlmYY0z0yKg&t=1s
+[https://www.youtube.com/watch?v=FlmYY0z0yKg&t=1s](https://www.youtube.com/watch?v=1A3u2wtSuaY)
 
 ---
 
